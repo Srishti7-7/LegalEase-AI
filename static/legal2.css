@@ -1,31 +1,56 @@
-/* Custom CSS to complement Tailwind */
+ /* --- Professional CSS Refinement --- */
+
+/* 1. Global Styles & Design System (Variables) */
 :root {
-    --glow-radius: 10px;
+    --bg-primary: #0f001a;
+    --text-primary: #E0E0E0;
+    --text-secondary: #c4b5fd;
+    --accent-violet: #8B5CF6;
+    --accent-pink: #EC4899;
+    --card-bg: rgba(22, 13, 40, 0.65);
+    --card-border: rgba(255, 255, 255, 0.1);
+    --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
 }
+
 body {
     font-family: 'Inter', sans-serif;
-    background-color: #0f001a;
-    color: #E0E0E0;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
 }
+
 .main-gradient-bg {
-    background-image: radial-gradient(at 27% 37%, hsla(215, 98%, 61%, 1) 0px, transparent 0%), radial-gradient(at 97% 21%, hsla(125, 98%, 72%, 1) 0px, transparent 50%), radial-gradient(at 52% 99%, hsla(355, 98%, 61%, 1) 0px, transparent 50%), radial-gradient(at 10% 29%, hsla(256, 96%, 61%, 1) 0px, transparent 50%), radial-gradient(at 97% 96%, hsla(38, 60%, 74%, 1) 0px, transparent 50%), radial-gradient(at 33% 50%, hsla(222, 67%, 73%, 1) 0px, transparent 50%), radial-gradient(at 79% 53%, hsla(343, 68%, 79%, 1) 0px, transparent 50%);
+    background-image: radial-gradient(at 27% 37%, hsla(215, 98%, 61%, 0.15) 0px, transparent 40%), radial-gradient(at 97% 21%, hsla(125, 98%, 72%, 0.1) 0px, transparent 50%), radial-gradient(at 52% 99%, hsla(355, 98%, 61%, 0.15) 0px, transparent 50%), radial-gradient(at 10% 29%, hsla(256, 96%, 61%, 0.2) 0px, transparent 50%), radial-gradient(at 97% 96%, hsla(38, 60%, 74%, 0.1) 0px, transparent 50%), radial-gradient(at 33% 50%, hsla(222, 67%, 73%, 0.1) 0px, transparent 50%), radial-gradient(at 79% 53%, hsla(343, 68%, 79%, 0.2) 0px, transparent 50%);
     background-size: cover;
     background-position: center;
 }
+
+/* 2. Components */
 .glass-card {
-    background: rgba(22, 13, 40, 0.6);
+    background: var(--card-bg);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--card-border);
+    box-shadow: var(--card-shadow);
+    transition: all 0.3s ease;
 }
+
 .nav-link.active {
     color: white;
     background: rgba(139, 92, 246, 0.3);
     box-shadow: 0 0 15px rgba(139, 92, 246, 0.5);
 }
+
 .glow-button {
     position: relative;
     overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.glow-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 25px rgba(236, 72, 153, 0.6);
 }
 .glow-button::before {
     content: '';
@@ -34,15 +59,15 @@ body {
     left: 50%;
     width: 300px;
     height: 300px;
-    background: radial-gradient(circle, rgba(167, 139, 250, 0.6) 0%, rgba(167, 139, 250, 0) 60%);
+    background: radial-gradient(circle, rgba(167, 139, 250, 0.5) 0%, rgba(167, 139, 250, 0) 60%);
     transform: translate(-50%, -50%);
     transition: width 0.4s ease, height 0.4s ease;
     z-index: 0;
-    animation: spin 5s linear infinite;
+    animation: spin 6s linear infinite;
 }
 .glow-button:hover::before {
-    width: 400px;
-    height: 400px;
+    width: 450px;
+    height: 450px;
 }
 .glow-button > * {
     position: relative;
@@ -52,16 +77,31 @@ body {
     0% { transform: translate(-50%, -50%) rotate(0deg); }
     100% { transform: translate(-50%, -50%) rotate(360deg); }
 }
+
 .tab-button.active {
-    background: linear-gradient(90deg, #8B5CF6, #EC4899);
+    background: linear-gradient(90deg, var(--accent-violet), var(--accent-pink));
     color: white;
     box-shadow: 0 0 20px rgba(236, 72, 153, 0.6);
 }
-.risk-high { background-color: #991b1b; color: #fecaca; }
-.risk-medium { background-color: #9a3412; color: #fed7aa; }
-.risk-low { background-color: #166534; color: #d1fae5; }
 
-/* --- Interactive Highlighting --- */
+.common-search-btn {
+    background: rgba(139, 92, 246, 0.15);
+    border: 1px solid rgba(167, 139, 250, 0.4);
+    color: var(--text-secondary);
+    padding: 8px 16px;
+    border-radius: 9999px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+}
+.common-search-btn:hover {
+    background: rgba(139, 92, 246, 0.3);
+    color: white;
+    transform: translateY(-1px);
+}
+
+/* 3. Feature-Specific Styles */
 .legal-term-highlight {
     background-color: rgba(167, 139, 250, 0.2);
     padding: 2px 6px;
@@ -70,131 +110,110 @@ body {
     position: relative;
     border-bottom: 2px dotted #a78bfa;
     font-weight: 500;
-    color: #c4b5fd;
+    color: var(--text-secondary);
+    transition: background-color 0.2s ease;
 }
-.legal-term-highlight .tooltip-text {
+.legal-term-highlight:hover {
+    background-color: rgba(167, 139, 250, 0.3);
+}
+
+.tooltip-text {
     visibility: hidden;
     width: 250px;
     background-color: #2c1b4b;
-    border: 1px solid #a78bfa;
+    border: 1px solid var(--accent-violet);
     color: #fff;
     text-align: left;
-    border-radius: 6px;
-    padding: 10px;
+    border-radius: 8px;
+    padding: 12px;
     position: absolute;
     z-index: 10;
-    bottom: 130%;
+    bottom: 135%;
     left: 50%;
     margin-left: -125px;
     opacity: 0;
-    transition: opacity 0.3s;
-    font-size: 13px;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    font-size: 14px;
     font-weight: 400;
-    line-height: 1.5;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    line-height: 1.6;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
 }
 .legal-term-highlight:hover .tooltip-text {
     visibility: visible;
     opacity: 1;
+    transform: translateY(0);
 }
 
-/* --- Legal Timeline --- */
-.timeline-container {
-    border-left: 3px solid #8B5CF6;
+.timeline-container { border-left: 3px solid var(--accent-violet); }
+.timeline-dot { border: 3px solid var(--accent-violet); background: var(--bg-primary); }
+
+.language-selector {
+    background-color: rgba(139, 92, 246, 0.15);
+    border: 1px solid rgba(167, 139, 250, 0.4);
+    color: #1e0a3e;
+    font-weight: 500;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%234c1d95' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 1em;
+    padding-right: 2.5rem;
 }
-.timeline-dot {
-    border: 3px solid #8B5CF6;
-    background: #160d28;
+.language-selector option {
+    background-color: #160d28;
+    color: var(--text-primary);
 }
 
-/* Add a simple fade-in animation for page transitions */
+/* 4. Animations & Floating Chat */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
 }
-
 .animate-fade-in {
     animation: fadeIn 0.5s ease-in-out;
 }
 
-/* --- Floating Chat Widget --- */
 #floating-chat-container {
     position: fixed;
     bottom: 2rem;
     right: 2rem;
     z-index: 1000;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
 }
-
 #chat-modal {
     height: 60vh;
     margin-bottom: 1rem;
     opacity: 0;
     transform: translateY(20px);
-    pointer-events: none; /* Prevents interaction when hidden */
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
 }
-
 #chat-modal.active {
     opacity: 1;
     transform: translateY(0);
-    pointer-events: auto; /* Allows interaction when visible */
+    pointer-events: auto;
 }
-
-#close-chat-modal {
-    font-size: 2rem;
-    line-height: 1;
-}
-
-/* Styles for chat messages in the general pop-up */
+#close-chat-modal { font-size: 2rem; line-height: 1; }
 .general-user-message {
-    background-color: #7c3aed; /* Violet */
+    background-color: var(--accent-violet);
     color: white;
     padding: 0.75rem;
-    border-radius: 0.75rem;
-    border-bottom-right-radius: 0;
+    border-radius: 0.75rem 0.75rem 0 0.75rem;
     align-self: flex-end;
-    max-width: 80%;
+    max-width: 85%;
 }
-
 .general-bot-message {
     background-color: rgba(0, 0, 0, 0.2);
-    color: #c4b5fd; /* Light Violet */
+    color: var(--text-secondary);
     padding: 0.75rem;
-    border-radius: 0.75rem;
-    border-bottom-left-radius: 0;
+    border-radius: 0.75rem 0.75rem 0.75rem 0;
     align-self: flex-start;
-    max-width: 80%;
+    max-width: 85%;
 }
-
 #general-chat-messages {
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
-}
-
-/* --- Custom Language Selector Dropdown --- */
-.language-selector {
-    background-color: rgba(139, 92, 246, 0.15); /* Semi-transparent violet background */
-    border: 1px solid rgba(167, 139, 250, 0.4);   /* Violet border */
-    color: #1e0a3e; /* Dark purple text color for high visibility */
-    font-weight: 500; /* Made the text slightly bolder */
-    
-    /* Remove default browser arrow */
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-
-    /* Add custom arrow using an SVG */
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%234c1d95' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 0.75rem center;
-    background-size: 1em;
-    padding-right: 2.5rem; /* Make space for the arrow */
-}
-
-.language-selector option {
-    background-color: #160d28; /* Dark background for the list */
-    color: #E0E0E0;            /* Light text for the options */
 }
