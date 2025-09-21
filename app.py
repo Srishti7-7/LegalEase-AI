@@ -1,4 +1,4 @@
-import os
+ import os
 import json
 import google.generativeai as genai
 from flask import Flask, request, jsonify, render_template
@@ -45,6 +45,7 @@ def read_document(file):
 
 # --- UTILITY TO CLEAN AND LOAD JSON ---
 def clean_and_load_json(response_text):
+    """Cleans the AI's response text and loads it into a Python object."""
     cleaned_text = response_text.strip().replace("```json", "").replace("```", "")
     if not cleaned_text:
         return None
@@ -60,6 +61,22 @@ def clean_and_load_json(response_text):
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/api/acts', methods=['POST'])
+def get_act_explanation():
+    if not model: return jsonify({"error": "AI model not configured"}), 500
+    query = request.json.get('query', '')
+    if not query: return jsonify({"error": "No query provided"}), 400
+
+    prompt = f"""
+    You are a legal database expert. A user is asking about "{query}".
+    Identify the relevant legal act, rule, or section, including its jurisdiction (country, state, or region).
+    Provide a clear and concise explanation of what the law states, what it means in simple terms, and its significance.
+    Format your response clearly with a main title for the act/section.
+    If the user's query is ambiguous (e.g., "Section 12"), provide the most well-known or globally relevant interpretation.
+    """
+    response = model.generate_content(prompt)
+    return jsonify({"explanation": response.text})
 
 @app.route('/api/simplify', methods=['POST'])
 def simplify_document():
@@ -100,21 +117,27 @@ def explain_concept():
     return jsonify({"explanation": response.text})
 
 @app.route('/api/predict', methods=['POST'])
-def predict_risks():
+def predict_risks_and_outcome():
     if not model: return jsonify({"error": "AI model not configured"}), 500
     doc_text = request.json.get('text', '')
     if not doc_text: return jsonify({"error": "No text provided"}), 400
 
     prompt = f"""
-    Act as a risk analyst. Analyze the following legal text and identify potential risks.
-    Return your response as a JSON array of objects. Each object should have "risk", "clause", and "severity" (High, Medium, or Low).
-    Do not include any introductory text, backticks, or the word "json" in your response.
+    Act as a legal analyst. Analyze the following legal text.
+    Return your response ONLY as a single valid JSON object with two main keys: "risks" and "prediction".
+
+    1. The "risks" key should contain a JSON array of objects. Each object should have "risk", "clause", and "severity" (High, Medium, or Low). If no risks are found, return an empty array.
+    
+    2. The "prediction" key should contain a JSON object with two keys: "outcome" and "reasoning".
+       - For "outcome", provide a short prediction like 'Likely to Win', 'Likely to Lose', or 'Uncertain'.
+       - For "reasoning", provide a brief, simple explanation for your prediction based on the text.
+
     Text: --- {doc_text[:8000]} ---
     """
     response = model.generate_content(prompt)
     parsed_json = clean_and_load_json(response.text)
     if parsed_json is None:
-        return jsonify({"error": "Failed to get a valid risk analysis from AI"}), 500
+        return jsonify({"error": "Failed to get a valid analysis from AI"}), 500
     return jsonify(parsed_json)
 
 @app.route('/api/dictionary', methods=['POST'])
