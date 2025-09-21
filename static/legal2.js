@@ -1,20 +1,19 @@
-document.addEventListener('DOMContentLoaded', () => {
+ document.addEventListener('DOMContentLoaded', () => {
     
     // --- APPLICATION STATE ---
     let currentDocumentText = null;
     let currentFileName = null;
-
     const API_BASE_URL = 'http://127.0.0.1:5001/api';
 
     // --- DOM ELEMENT SELECTORS ---
     const getEl = (id) => document.getElementById(id);
-
     const elements = {
         uploadArea: getEl('uploadArea'),
         fileInput: getEl('fileInput'),
         simplifyLoading: getEl('simplifyLoading'),
         simplifyResults: getEl('simplifyResults'),
         simplifiedContent: getEl('simplifiedContent'),
+        resetButton: getEl('resetButton'),
         conceptSearchInput: getEl('conceptSearch'),
         conceptLanguageSelector: getEl('conceptLanguageSelector'),
         searchConceptButton: getEl('searchConceptButton'),
@@ -22,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
         conceptResults: getEl('conceptResults'),
         runPredictionButton: getEl('runPredictionButton'),
         predictLoading: getEl('predictLoading'),
+        predictionOutcome: getEl('predictionOutcome'),
         predictResults: getEl('predictResults'),
         termSearchInput: getEl('termSearch'),
         dictionaryLanguageSelector: getEl('dictionaryLanguageSelector'),
@@ -31,6 +31,10 @@ document.addEventListener('DOMContentLoaded', () => {
         searchTimelineButton: getEl('searchTimelineButton'),
         timelineLoading: getEl('timelineLoading'),
         timelineContainer: getEl('timelineContainer'),
+        actsSearchInput: getEl('actsSearchInput'),
+        actsSearchButton: getEl('actsSearchButton'),
+        actsLoading: getEl('actsLoading'),
+        actsResults: getEl('actsResults'),
         chatInput: getEl('chatInput'),
         sendChatButton: getEl('sendChatButton'),
         chatMessages: getEl('chatMessages'),
@@ -45,7 +49,6 @@ document.addEventListener('DOMContentLoaded', () => {
         generalChatMessages: getEl('general-chat-messages'),
         generalChatInput: getEl('general-chat-input'),
         generalChatSend: getEl('general-chat-send'),
-        resetButton: getEl('resetButton'),
     };
 
     // --- INITIALIZATION ---
@@ -67,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         ['dragenter', 'dragover'].forEach(eventName => elements.uploadArea.addEventListener(eventName, () => elements.uploadArea.classList.add('border-pink-400', 'bg-violet-500/10')));
         ['dragleave', 'drop'].forEach(eventName => elements.uploadArea.addEventListener(eventName, () => elements.uploadArea.classList.remove('border-pink-400', 'bg-violet-500/10')));
-        elements.uploadArea.addEventListener('drop', handleDrop, false);
+        elements.uploadArea.addEventListener('drop', (e) => handleFileUpload(e.dataTransfer.files[0]));
         elements.fileInput.addEventListener('change', (e) => handleFileUpload(e.target.files[0]));
 
         elements.searchConceptButton.addEventListener('click', searchConcept);
@@ -77,20 +80,32 @@ document.addEventListener('DOMContentLoaded', () => {
         elements.termSearchInput.addEventListener('keypress', e => e.key === 'Enter' && searchTerm());
         elements.searchTimelineButton.addEventListener('click', searchTimeline);
         elements.timelineSearchInput.addEventListener('keypress', e => e.key === 'Enter' && searchTimeline());
+        elements.actsSearchButton.addEventListener('click', searchActsAndRules);
+        elements.actsSearchInput.addEventListener('keypress', e => e.key === 'Enter' && searchActsAndRules());
         elements.sendChatButton.addEventListener('click', sendMessage);
         elements.chatInput.addEventListener('keypress', e => e.key === 'Enter' && sendMessage());
         elements.resetButton.addEventListener('click', resetAppForNewFile);
+
+        document.querySelectorAll('.common-search-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                // First, navigate to the "Acts & Rules" page
+                handlePageNavigation({ preventDefault: () => {}, currentTarget: { dataset: { page: 'acts' } } });
+                // Then, populate the search and run it
+                elements.actsSearchInput.value = button.textContent;
+                searchActsAndRules();
+            });
+        });
         
-        elements.contactSubmit.addEventListener('click', e => {
+        elements.contactSubmit?.addEventListener('click', e => {
             e.preventDefault();
             showNotification('Thank you for your message!', 'success');
             e.target.closest('form').reset();
         });
 
-        elements.openChatButton.addEventListener('click', toggleChatModal);
-        elements.closeChatModal.addEventListener('click', toggleChatModal);
-        elements.generalChatSend.addEventListener('click', sendGeneralMessage);
-        elements.generalChatInput.addEventListener('keypress', e => e.key === 'Enter' && sendGeneralMessage());
+        elements.openChatButton?.addEventListener('click', toggleChatModal);
+        elements.closeChatModal?.addEventListener('click', toggleChatModal);
+        elements.generalChatSend?.addEventListener('click', sendGeneralMessage);
+        elements.generalChatInput?.addEventListener('keypress', e => e.key === 'Enter' && sendGeneralMessage());
     };
 
     // --- CORE API CALL FUNCTION ---
@@ -110,6 +125,34 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     
     // --- FEATURE IMPLEMENTATIONS ---
+    const searchActsAndRules = async () => {
+        const query = elements.actsSearchInput.value.trim();
+        if (!query) {
+            showNotification('Please enter an act, rule, or section to search.', 'warning');
+            return;
+        }
+        
+        elements.actsLoading.classList.remove('hidden');
+        elements.actsResults.innerHTML = '';
+
+        try {
+            const result = await apiCall('acts', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ query })
+            });
+            const explanationCard = `
+                <div class="glass-card p-6 rounded-lg animate-fade-in mt-6">
+                    <p class="text-violet-200 leading-relaxed whitespace-pre-wrap">${result.explanation.replace(/\n/g, '<br>')}</p>
+                </div>`;
+            elements.actsResults.innerHTML = explanationCard;
+        } catch (error) {
+            elements.actsResults.innerHTML = `<p class="text-red-400">Could not find information for "${query}". Please try again.</p>`;
+        } finally {
+            elements.actsLoading.classList.add('hidden');
+        }
+    };
+
     const handleFileUpload = async (file) => {
         if (!file) return;
         elements.uploadArea.classList.add('hidden');
@@ -123,7 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
             currentFileName = file.name;
             displaySimplifiedContent(result.summary, result.definitions);
             elements.simplifyResults.classList.remove('hidden');
-            const docUploadMessage = "Your document has been analyzed. You can now use 'Risk Analysis' or ask specific questions about the text in the chat.";
+            const docUploadMessage = "Your document has been analyzed. You can now use 'Outcome Analysis' or ask specific questions about the text in the chat.";
             addBotMessage(docUploadMessage);
             elements.chatStatus.textContent = `Analyzing: ${currentFileName}`;
             updateHistory(currentFileName);
@@ -139,7 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let highlightedSummary = summary;
         for (const term in definitions) {
             const regex = new RegExp(`\\b(${term})\\b`, 'gi');
-            highlightedSummary = highlightedSummary.replace(regex, (match) =>
+            highlightedSummary = highlightedSummary.replace(regex, (match) => 
                 `<span class="legal-term-highlight" data-tooltip="${definitions[term]}">${match}</span>`
             );
         }
@@ -171,11 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ concept, language })
             });
-            const explanationCard = `
-                <div class="glass-card p-6 rounded-lg animate-fade-in">
-                    <h4 class="font-bold text-pink-400 text-xl mb-3">${concept.charAt(0).toUpperCase() + concept.slice(1)}</h4>
-                    <p class="text-violet-200 leading-relaxed whitespace-pre-wrap">${result.explanation}</p>
-                </div>`;
+            const explanationCard = `<div class="glass-card p-6 rounded-lg animate-fade-in"><h4 class="font-bold text-pink-400 text-xl mb-3">${concept.charAt(0).toUpperCase() + concept.slice(1)}</h4><p class="text-violet-200 leading-relaxed whitespace-pre-wrap">${result.explanation}</p></div>`;
             elements.conceptResults.innerHTML = explanationCard;
         } catch (error) {
             elements.conceptResults.innerHTML = `<p class="text-red-400">Could not generate an explanation. Please try again.</p>`;
@@ -192,30 +231,38 @@ document.addEventListener('DOMContentLoaded', () => {
         elements.predictLoading.classList.remove('hidden');
         elements.predictResults.innerHTML = '';
         elements.predictResults.classList.add('hidden');
+        elements.predictionOutcome.innerHTML = '';
+        elements.predictionOutcome.classList.add('hidden');
+
         try {
-            const risks = await apiCall('predict', {
+            const result = await apiCall('predict', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ text: currentDocumentText })
             });
-            if (risks.length === 0) {
-                 elements.predictResults.innerHTML = `<p class="text-green-300">No significant risks found in the document.</p>`;
-            } else {
-                risks.forEach(item => {
+
+            if (result.prediction && result.prediction.outcome) {
+                const outcomeColor = result.prediction.outcome.toLowerCase().includes('win') ? 'green' : result.prediction.outcome.toLowerCase().includes('lose') ? 'red' : 'orange';
+                const outcomeIcon = result.prediction.outcome.toLowerCase().includes('win') ? 'thumbs-up' : result.prediction.outcome.toLowerCase().includes('lose') ? 'thumbs-down' : 'help-circle';
+                
+                const predictionCard = `<h4 class="text-xl font-bold text-white mb-2">Predicted Outcome</h4><div class="glass-card p-4 rounded-lg border-l-4 border-${outcomeColor}-500"><h5 class="font-bold text-white text-lg flex items-center gap-2"><i data-lucide="${outcomeIcon}" class="w-5 h-5"></i>${result.prediction.outcome}</h5><p class="text-violet-200 mt-2">${result.prediction.reasoning}</p></div>`;
+                elements.predictionOutcome.innerHTML = predictionCard;
+                elements.predictionOutcome.classList.remove('hidden');
+            }
+
+            elements.predictResults.innerHTML += `<h4 class="text-xl font-bold text-white mb-2 mt-6">Potential Risks</h4>`;
+            if (result.risks && result.risks.length > 0) {
+                result.risks.forEach(item => {
                     const icon = item.severity.toLowerCase() === 'high' ? 'shield-alert' : item.severity.toLowerCase() === 'medium' ? 'shield-half' : 'shield-check';
-                    const riskCard = `
-                        <div class="glass-card p-4 rounded-lg border-l-4 border-${item.severity.toLowerCase() === 'high' ? 'red' : item.severity.toLowerCase() === 'medium' ? 'orange' : 'green'}-500">
-                            <h5 class="font-bold text-white flex items-center gap-2"><i data-lucide="${icon}" class="w-5 h-5"></i> ${item.severity} Risk</h5>
-                            <p class="text-violet-200 mt-1">${item.risk}</p>
-                            <p class="text-xs text-violet-400 mt-2 font-mono bg-black/20 p-2 rounded">Clause: "${item.clause}"</p>
-                        </div>
-                    `;
+                    const riskCard = `<div class="glass-card p-4 rounded-lg border-l-4 border-${item.severity.toLowerCase() === 'high' ? 'red' : item.severity.toLowerCase() === 'medium' ? 'orange' : 'green'}-500"><h5 class="font-bold text-white flex items-center gap-2"><i data-lucide="${icon}" class="w-5 h-5"></i> ${item.severity} Risk</h5><p class="text-violet-200 mt-1">${item.risk}</p><p class="text-xs text-violet-400 mt-2 font-mono bg-black/20 p-2 rounded">Clause: "${item.clause}"</p></div>`;
                     elements.predictResults.innerHTML += riskCard;
                 });
+            } else {
+                elements.predictResults.innerHTML += `<p class="text-green-300">No significant risks found in the document.</p>`;
             }
             lucide.createIcons();
         } catch (error) {
-            elements.predictResults.innerHTML = `<p class="text-red-400">Could not analyze risks. Please try again.</p>`;
+            elements.predictResults.innerHTML = `<p class="text-red-400">Could not run analysis. Please try again.</p>`;
         } finally {
             elements.predictLoading.classList.add('hidden');
             elements.predictResults.classList.remove('hidden');
@@ -233,11 +280,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ term, language })
             });
-            const definitionCard = `
-                <div class="glass-card p-4 rounded-lg animate-fade-in">
-                    <h5 class="font-bold text-pink-400 text-lg">${term}</h5>
-                    <p class="text-violet-200 mt-1">${result.definition}</p>
-                </div>`;
+            const definitionCard = `<div class="glass-card p-4 rounded-lg animate-fade-in"><h5 class="font-bold text-pink-400 text-lg">${term}</h5><p class="text-violet-200 mt-1">${result.definition}</p></div>`;
             elements.dictionaryResults.innerHTML = definitionCard;
         } catch (error) {
             elements.dictionaryResults.innerHTML = `<p class="text-red-400">Could not find a definition for "${term}".</p>`;
@@ -260,15 +303,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 elements.timelineContainer.innerHTML = `<p class="text-violet-300">No historical data found for "${concept}".</p>`;
             } else {
                 timelineData.forEach(item => {
-                    const timelineItem = `
-                        <div class="mb-8 relative">
-                            <div class="timeline-dot w-6 h-6 absolute -left-3 mt-1.5 rounded-full"></div>
-                            <div class="pl-10">
-                                <span class="bg-violet-500/30 text-pink-300 font-bold px-3 py-1 rounded-full text-sm">${item.year}</span>
-                                <p class="mt-2 text-violet-200">${item.content}</p>
-                            </div>
-                        </div>
-                    `;
+                    const timelineItem = `<div class="mb-8 relative"><div class="timeline-dot w-6 h-6 absolute -left-3 mt-1.5 rounded-full"></div><div class="pl-10"><span class="bg-violet-500/30 text-pink-300 font-bold px-3 py-1 rounded-full text-sm">${item.year}</span><p class="mt-2 text-violet-200">${item.content}</p></div></div>`;
                     elements.timelineContainer.innerHTML += timelineItem;
                 });
             }
@@ -283,14 +318,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const sendMessage = async () => {
         const question = elements.chatInput.value.trim();
         if (!question) return;
-
         addUserMessage(question);
         elements.chatInput.value = '';
         elements.chatStatus.textContent = 'Thinking...';
-
         try {
             let result;
-            // If a document is loaded, use the context-specific chat. Otherwise, use the general chat.
             if (currentDocumentText) {
                 result = await apiCall('chat', {
                     method: 'POST',
@@ -316,18 +348,15 @@ document.addEventListener('DOMContentLoaded', () => {
         currentDocumentText = null;
         currentFileName = null;
         elements.fileInput.value = '';
-    
         elements.simplifyResults.classList.add('hidden');
         elements.simplifiedContent.innerHTML = '';
         elements.predictResults.innerHTML = '';
         elements.predictResults.classList.add('hidden');
+        elements.predictionOutcome.innerHTML = '';
+        elements.predictionOutcome.classList.add('hidden');
         elements.uploadArea.classList.remove('hidden');
-    
-        elements.chatMessages.innerHTML = '';
-        const initialMessage = `<div class="p-3 rounded-lg bg-black/20 max-w-xs text-sm text-violet-200 rounded-bl-none">Hello! I am your AI Legal Assistant. Ask me any legal question.</div>`;
-        elements.chatMessages.innerHTML = initialMessage;
+        elements.chatMessages.innerHTML = `<div class="p-3 rounded-lg bg-black/20 max-w-xs text-sm text-violet-200 rounded-bl-none">Hello! I am your AI Legal Assistant. Ask me any legal question.</div>`;
         elements.chatStatus.textContent = 'Ready to assist';
-    
         lucide.createIcons();
     };
     
@@ -396,25 +425,18 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             elements.historyList.innerHTML = '';
             history.forEach(item => {
-                const historyItem = `
-                    <div class="flex justify-between items-center p-2 rounded-lg hover:bg-white/10">
-                        <div class="flex items-center gap-3">
-                             <i data-lucide="file-text" class="w-5 h-5 text-violet-300"></i>
-                             <span class="text-white">${item.name}</span>
-                        </div>
-                        <span class="text-xs text-violet-400">${item.date}</span>
-                    </div>
-                `;
+                const historyItem = `<div class="flex justify-between items-center p-2 rounded-lg hover:bg-white/10"><div class="flex items-center gap-3"><i data-lucide="file-text" class="w-5 h-5 text-violet-300"></i><span class="text-white">${item.name}</span></div><span class="text-xs text-violet-400">${item.date}</span></div>`;
                 elements.historyList.innerHTML += historyItem;
             });
             lucide.createIcons();
         }
     };
-
     const toggleChatModal = () => {
-        elements.chatModal.classList.toggle('hidden');
-        elements.chatModal.classList.toggle('active');
-        if (elements.chatModal.classList.contains('active') && elements.generalChatMessages.children.length === 0) {
+        const chatModal = getEl('chat-modal');
+        if (!chatModal) return;
+        chatModal.classList.toggle('hidden');
+        chatModal.classList.toggle('active');
+        if (chatModal.classList.contains('active') && elements.generalChatMessages.children.length === 0) {
             addGeneralChatMessage("Hello! Ask me any general legal question.", 'bot');
         }
     };
@@ -442,6 +464,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // --- START THE APP ---
     initializeApp();
 });
