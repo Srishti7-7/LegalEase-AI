@@ -1,4 +1,4 @@
-  import os
+import os
 import json
 import google.generativeai as genai
 from flask import Flask, request, jsonify, render_template
@@ -206,3 +206,4 @@ def general_chat():
 # --- START THE SERVER ---
 if __name__ == '__main__':
     app.run(debug=True, port=5001)
+
