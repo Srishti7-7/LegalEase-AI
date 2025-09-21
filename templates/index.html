@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -20,7 +20,7 @@
         
         <header class="glass-card rounded-2xl p-4 mb-8">
             <div class="container mx-auto flex justify-between items-center">
-                <a href="#" class="flex items-center gap-3 nav-link active" data-page="home">
+                <a href="#" class="flex items-center gap-3 nav-link" data-page="home">
                     <div class="w-12 h-12 bg-gradient-to-br from-violet-500 to-pink-500 rounded-lg flex items-center justify-center shadow-lg shadow-violet-500/30">
                         <i data-lucide="scale" class="text-white"></i>
                     </div>
@@ -31,16 +31,18 @@
                 </a>
                 <nav class="hidden md:flex items-center gap-2">
                     <a href="#" class="nav-link px-4 py-2 rounded-lg text-violet-200 hover:bg-violet-500/20 hover:text-white transition-all duration-300 active" data-page="home">Home</a>
+                    <a href="#" class="nav-link px-4 py-2 rounded-lg text-violet-200 hover:bg-violet-500/20 hover:text-white transition-all duration-300" data-page="acts">Acts & Rules</a>
                     <a href="#" class="nav-link px-4 py-2 rounded-lg text-violet-200 hover:bg-violet-500/20 hover:text-white transition-all duration-300" data-page="how-it-works">How It Works</a>
                     <a href="#" class="nav-link px-4 py-2 rounded-lg text-violet-200 hover:bg-violet-500/20 hover:text-white transition-all duration-300" data-page="about">About Us</a>
                     <a href="#" class="nav-link px-4 py-2 rounded-lg text-violet-200 hover:bg-violet-500/20 hover:text-white transition-all duration-300" data-page="contact">Contact</a>
                 </nav>
-                   <button id="mobile-menu-button" class="md:hidden p-2 rounded-md text-violet-200 hover:bg-violet-500/20">
+                 <button id="mobile-menu-button" class="md:hidden p-2 rounded-md text-violet-200 hover:bg-violet-500/20">
                     <i data-lucide="menu"></i>
                 </button>
             </div>
-               <div id="mobile-menu" class="hidden md:hidden mt-4 flex flex-col gap-2">
+             <div id="mobile-menu" class="hidden md:hidden mt-4 flex flex-col gap-2">
                 <a href="#" class="nav-link px-4 py-2 rounded-lg text-violet-200 hover:bg-violet-500/20 hover:text-white transition-all duration-300 active" data-page="home">Home</a>
+                <a href="#" class="nav-link px-4 py-2 rounded-lg text-violet-200 hover:bg-violet-500/20 hover:text-white transition-all duration-300" data-page="acts">Acts & Rules</a>
                 <a href="#" class="nav-link px-4 py-2 rounded-lg text-violet-200 hover:bg-violet-500/20 hover:text-white transition-all duration-300" data-page="how-it-works">How It Works</a>
                 <a href="#" class="nav-link px-4 py-2 rounded-lg text-violet-200 hover:bg-violet-500/20 hover:text-white transition-all duration-300" data-page="about">About</a>
                 <a href="#" class="nav-link px-4 py-2 rounded-lg text-violet-200 hover:bg-violet-500/20 hover:text-white transition-all duration-300" data-page="contact">Contact</a>
@@ -111,22 +113,22 @@
                                 <div id="conceptResults" class="space-y-4"></div>
                             </div>
                             <div id="predict" class="tab-content hidden animate-fade-in">
-                                <h3 class="text-2xl font-bold text-white mb-4">Outcome Analysis</h3>
-                                <p class="text-violet-300 mb-6">Our AI will analyze your uploaded document for potential risks and predict a likely case outcome.</p>
-                                <button id="runPredictionButton" class="glow-button flex items-center gap-2 bg-gradient-to-r from-amber-500 to-orange-600 text-white font-bold py-3 px-6 rounded-lg shadow-lg shadow-amber-500/30 hover:scale-105 transition-transform duration-300">
+                                 <h3 class="text-2xl font-bold text-white mb-4">Outcome Analysis</h3>
+                                 <p class="text-violet-300 mb-6">Our AI will analyze your uploaded document for potential risks and predict a likely case outcome.</p>
+                                 <button id="runPredictionButton" class="glow-button flex items-center gap-2 bg-gradient-to-r from-amber-500 to-orange-600 text-white font-bold py-3 px-6 rounded-lg shadow-lg shadow-amber-500/30 hover:scale-105 transition-transform duration-300">
                                     <i data-lucide="shield-alert"></i>
                                     <span>Run Analysis</span>
-                                </button>
-                                <div id="predictLoading" class="hidden text-center py-8">
+                                 </button>
+                                 <div id="predictLoading" class="hidden text-center py-8">
                                     <div class="w-12 h-12 border-4 border-t-amber-500 border-violet-500/30 rounded-full animate-spin mx-auto"></div>
                                     <p class="mt-4 text-amber-200">Running analysis...</p>
-                                </div>
-                                <div id="predictionOutcome" class="hidden mt-6"></div>
-                                <div id="predictResults" class="hidden mt-4 space-y-4"></div>
+                                 </div>
+                                 <div id="predictionOutcome" class="hidden mt-6"></div>
+                                 <div id="predictResults" class="hidden mt-4 space-y-4"></div>
                             </div>
                             <div id="dictionary" class="tab-content hidden animate-fade-in">
-                                <h3 class="text-2xl font-bold text-white mb-4">Legal Dictionary</h3>
-                                <div class="mb-4">
+                                 <h3 class="text-2xl font-bold text-white mb-4">Legal Dictionary</h3>
+                                 <div class="mb-4">
                                     <label for="dictionaryLanguageSelector" class="block text-sm font-medium text-violet-200 mb-2">Select Language:</label>
                                     <select id="dictionaryLanguageSelector" class="language-selector w-full rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-pink-500">
                                         <option selected>English</option>
@@ -138,23 +140,23 @@
                                         <option>Kannada (ಕನ್ನಡ)</option>
                                     </select>
                                 </div>
-                                <div class="flex gap-2 mb-6">
+                                 <div class="flex gap-2 mb-6">
                                     <input type="text" id="termSearch" class="flex-grow bg-black/20 border border-violet-400/50 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-pink-500" placeholder="Enter a legal term...">
                                     <button id="searchTermButton" class="glow-button bg-gradient-to-r from-violet-500 to-pink-500 text-white font-bold py-2 px-4 rounded-lg shadow-lg shadow-violet-500/30"><i data-lucide="search"></i></button>
-                                </div>
-                                <div id="dictionaryResults" class="space-y-4"></div>
+                                 </div>
+                                 <div id="dictionaryResults" class="space-y-4"></div>
                             </div>
                             <div id="timeline" class="tab-content hidden animate-fade-in">
-                                <h3 class="text-2xl font-bold text-white mb-4">Legal Concept Timeline</h3>
-                                <div class="flex gap-2 mb-6">
+                                 <h3 class="text-2xl font-bold text-white mb-4">Legal Concept Timeline</h3>
+                                 <div class="flex gap-2 mb-6">
                                     <input type="text" id="timelineSearch" class="flex-grow bg-black/20 border border-violet-400/50 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-pink-500" placeholder="e.g., 'Right to Privacy in India'">
                                     <button id="searchTimelineButton" class="glow-button bg-gradient-to-r from-violet-500 to-pink-500 text-white font-bold py-2 px-4 rounded-lg shadow-lg shadow-violet-500/30"><i data-lucide="search"></i> Search</button>
-                                </div>
-                                <div id="timelineLoading" class="hidden text-center py-8">
-                                        <div class="w-12 h-12 border-4 border-t-pink-500 border-violet-500/30 rounded-full animate-spin mx-auto"></div>
-                                        <p class="mt-4 text-violet-200">Researching historical data...</p>
-                                </div>
-                                <div id="timelineContainer" class="hidden mt-6 pl-6 relative timeline-container"></div>
+                                 </div>
+                                 <div id="timelineLoading" class="hidden text-center py-8">
+                                      <div class="w-12 h-12 border-4 border-t-pink-500 border-violet-500/30 rounded-full animate-spin mx-auto"></div>
+                                      <p class="mt-4 text-violet-200">Researching historical data...</p>
+                                 </div>
+                                 <div id="timelineContainer" class="hidden mt-6 pl-6 relative timeline-container"></div>
                             </div>
                         </div>
                     </div>
@@ -178,47 +180,104 @@
                             </div>
                         </div>
                         <div class="glass-card rounded-2xl p-6">
-                               <h4 class="text-xl font-bold text-white mb-4 flex items-center gap-2"><i data-lucide="history"></i> Recent History</h4>
-                               <div id="historyList" class="space-y-2">
-                                 <p class="text-violet-300 text-center">No documents analyzed yet.</p>
-                               </div>
+                             <h4 class="text-xl font-bold text-white mb-4 flex items-center gap-2"><i data-lucide="history"></i> Recent History</h4>
+                             <div id="historyList" class="space-y-2">
+                                <p class="text-violet-300 text-center">No documents analyzed yet.</p>
+                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
+            <div id="page-acts" class="page-content hidden animate-fade-in container mx-auto max-w-4xl">
+                <div class="glass-card rounded-2xl p-8 text-center">
+                    <i data-lucide="scroll-text" class="w-16 h-16 mx-auto text-violet-300 mb-4"></i>
+                    <h2 class="text-4xl font-extrabold text-white mb-4">Explore Legal Acts and Rules</h2>
+                    <p class="text-lg text-violet-200 max-w-2xl mx-auto mb-8">Enter a specific act, rule, or section from any country to get a simple explanation of what it means and why it's important.</p>
+                    
+                    <div class="flex flex-col md:flex-row gap-2 mb-6">
+                        <input type="text" id="actsSearchInput" class="flex-grow bg-black/20 border border-violet-400/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-pink-500" placeholder="e.g., 'Section 302 of Indian Penal Code', 'Fourth Amendment US Constitution'">
+                        <button id="actsSearchButton" class="glow-button flex-shrink-0 bg-gradient-to-r from-violet-500 to-pink-500 text-white font-bold py-3 px-6 rounded-lg shadow-lg shadow-violet-500/30 flex items-center justify-center">
+                            <i data-lucide="search" class="w-5 h-5 mr-2"></i>
+                            <span>Search</span>
+                        </button>
+                    </div>
+                    
+                    <div class="text-left mb-8">
+                        <h4 class="font-semibold text-violet-200 mb-3">Common Examples:</h4>
+                        <div class="flex flex-wrap gap-2">
+                            <button class="common-search-btn">IPC Section 302 (India)</button>
+                            <button class="common-search-btn">Fourth Amendment (USA)</button>
+                            <button class="common-search-btn">GDPR Article 17 (EU)</button>
+                        </div>
+                    </div>
+
+                    <div id="actsLoading" class="hidden text-center py-8">
+                        <div class="w-12 h-12 border-4 border-t-pink-500 border-violet-500/30 rounded-full animate-spin mx-auto"></div>
+                        <p class="mt-4 text-violet-200">Researching legal databases...</p>
+                    </div>
+                    
+                    <div id="actsResults" class="text-left"></div>
+                </div>
+            </div>
+
             <div id="page-how-it-works" class="page-content hidden animate-fade-in container mx-auto text-center">
-                   <h2 class="text-4xl font-extrabold text-white mb-4">Making Legal Simple in 3 Steps</h2>
-                   <p class="text-lg text-violet-200 max-w-3xl mx-auto mb-12">Our powerful AI makes understanding complex documents as easy as 1-2-3.</p>
-                   <div class="grid md:grid-cols-3 gap-8">
-                       <div class="glass-card rounded-2xl p-8 transform hover:-translate-y-2 transition-transform duration-300">
-                           <div class="w-20 h-20 mb-6 mx-auto bg-gradient-to-br from-pink-500 to-orange-400 rounded-2xl flex items-center justify-center shadow-lg shadow-pink-500/40"><i data-lucide="upload-cloud" class="w-10 h-10 text-white"></i></div>
-                           <h3 class="text-2xl font-bold text-white mb-2">1. Upload Your Document</h3>
-                           <p class="text-violet-300">Securely upload any legal document like a rental agreement, contract, or terms of service.</p>
-                       </div>
-                       <div class="glass-card rounded-2xl p-8 transform hover:-translate-y-2 transition-transform duration-300">
-                           <div class="w-20 h-20 mb-6 mx-auto bg-gradient-to-br from-violet-500 to-teal-400 rounded-2xl flex items-center justify-center shadow-lg shadow-violet-500/40"><i data-lucide="cpu" class="w-10 h-10 text-white"></i></div>
-                           <h3 class="text-2xl font-bold text-white mb-2">2. AI Analysis</h3>
-                           <p class="text-violet-300">Our generative AI scans the document in seconds, identifying key clauses, complex jargon, and potential risks.</p>
-                       </div>
-                       <div class="glass-card rounded-2xl p-8 transform hover:-translate-y-2 transition-transform duration-300">
-                           <div class="w-20 h-20 mb-6 mx-auto bg-gradient-to-br from-emerald-500 to-lime-400 rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-500/40"><i data-lucide="sparkles" class="w-10 h-10 text-white"></i></div>
-                           <h3 class="text-2xl font-bold text-white mb-2">3. Get Clear Guidance</h3>
-                           <p class="text-violet-300">Receive an interactive summary, risk analysis, and plain-language explanations. Ask our AI for more details.</p>
-                       </div>
-                   </div>
+                <h2 class="text-4xl font-extrabold text-white mb-4">Making Legal Simple in 3 Steps</h2>
+                <p class="text-lg text-violet-200 max-w-3xl mx-auto mb-12">Our powerful AI makes understanding complex documents as easy as 1-2-3.</p>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="glass-card rounded-2xl p-8 transform hover:-translate-y-2 transition-transform duration-300">
+                        <div class="w-20 h-20 mb-6 mx-auto bg-gradient-to-br from-pink-500 to-orange-400 rounded-2xl flex items-center justify-center shadow-lg shadow-pink-500/40">
+                            <i data-lucide="upload-cloud" class="w-10 h-10 text-white"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-2">1. Upload Your Document</h3>
+                        <p class="text-violet-300">Securely upload any legal document like a rental agreement, contract, or terms of service.</p>
+                    </div>
+                    <div class="glass-card rounded-2xl p-8 transform hover:-translate-y-2 transition-transform duration-300">
+                        <div class="w-20 h-20 mb-6 mx-auto bg-gradient-to-br from-violet-500 to-teal-400 rounded-2xl flex items-center justify-center shadow-lg shadow-violet-500/40">
+                            <i data-lucide="cpu" class="w-10 h-10 text-white"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-2">2. AI Analysis</h3>
+                        <p class="text-violet-300">Our generative AI scans the document in seconds, identifying key clauses, complex jargon, and potential risks.</p>
+                    </div>
+                    <div class="glass-card rounded-2xl p-8 transform hover:-translate-y-2 transition-transform duration-300">
+                        <div class="w-20 h-20 mb-6 mx-auto bg-gradient-to-br from-emerald-500 to-lime-400 rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-500/40">
+                            <i data-lucide="sparkles" class="w-10 h-10 text-white"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-2">3. Get Clear Guidance</h3>
+                        <p class="text-violet-300">Receive an interactive summary, risk analysis, and plain-language explanations. Ask our AI for more details.</p>
+                    </div>
+                </div>
             </div>
             
             <div id="page-about" class="page-content hidden animate-fade-in container mx-auto">
-                   <div class="grid lg:grid-cols-2 gap-12 items-center">
-                       <div>
-                           <h2 class="text-4xl font-extrabold text-white mb-4">Our Mission: Legal Clarity for Everyone</h2>
-                           <p class="text-lg text-violet-200 mb-6 leading-relaxed">Legal documents are often dense and confusing, creating a knowledge gap that can be intimidating. At LegalEase AI, we are leveraging the power of advanced generative AI to bridge this gap. We believe everyone deserves to understand what they're signing. Our tool serves as a secure, private, and insightful first step in demystifying contracts, empowering you to make informed decisions and protect your interests with confidence.</p>
-                       </div>
-                       <div class="p-8 hidden lg:block">
-                           <img src="/static/about-us-image.jpg" class="rounded-2xl shadow-xl"/>
-                       </div>
-                   </div>
+                 <div class="grid lg:grid-cols-2 gap-12 items-center">
+                      <div>
+                          <h2 class="text-4xl font-extrabold text-white mb-4">Our Mission: Legal Clarity for Everyone</h2>
+                          <p class="text-lg text-violet-200 mb-6">Legal documents are often dense and confusing, creating a knowledge gap that can be intimidating. At LegalEase AI, we are leveraging the power of advanced generative AI to bridge this gap. We believe everyone deserves to understand what they're signing. Our tool serves as a secure, private, and insightful first step in demystifying contracts and agreements, empowering you to make informed decisions and protect your interests with confidence.</p>
+                          <div class="flex gap-4">
+                               <div class="bg-gradient-to-r from-teal-400 to-blue-500 p-4 rounded-lg flex-1 text-white text-center">
+                                   <p class="text-3xl font-bold">10k+</p>
+                                   <p>Documents Analyzed</p>
+                               </div>
+                               <div class="bg-gradient-to-r from-pink-500 to-violet-500 p-4 rounded-lg flex-1 text-white text-center">
+                                  <p class="text-3xl font-bold">98%</p>
+                                  <p>User Satisfaction</p>
+                               </div>
+                          </div>
+                      </div>
+                      <div class="p-8 hidden lg:block">
+                         <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#a78bfa;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#f472b6;stop-opacity:1" />
+                                </linearGradient>
+                            </defs>
+                            <path fill="url(#grad1)" d="M46.2,-77.3C60.3,-69.5,72.5,-58.5,79.5,-44.7C86.5,-30.9,88.4,-15.5,86.6,-1.3C84.8,12.9,79.4,25.8,71.7,37.8C64,49.8,54.1,60.9,42.5,68.2C30.9,75.5,17.7,79,4.2,79.8C-9.3,80.6,-22.9,78.7,-35.5,72.9C-48.2,67.1,-59.9,57.4,-68.8,45.7C-77.7,34,-83.7,20.2,-85.4,5.8C-87.1,-8.6,-84.5,-23.5,-77.2,-35.8C-69.9,-48.2,-58,-58,-45.3,-65.8C-32.6,-73.6,-19.1,-79.3,-4.5,-80.7C10,-82.1,20,-79.9,29.3,-78.9C38.6,-78,46.2,-77.3,46.2,-77.3Z" transform="translate(100 100)" />
+                            <text x="50%" y="50%" text-anchor="middle" fill="white" font-size="20" font-weight="bold" dy=".3em">AI</text>
+                        </svg>
+                      </div>
+                 </div>
             </div>
 
             <div id="page-contact" class="page-content hidden animate-fade-in container mx-auto max-w-2xl text-center">
@@ -248,7 +307,31 @@
     <div id="notification-container" class="fixed top-24 right-8 z-50 space-y-3"></div>
 
     <div id="floating-chat-container">
+        <div id="chat-modal" class="hidden glass-card w-full max-w-md rounded-2xl shadow-2xl flex flex-col transition-all duration-300">
+            <div class="flex items-center justify-between p-4 border-b border-white/10">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-teal-400 to-blue-500 rounded-full flex items-center justify-center">
+                        <i data-lucide="message-circle" class="text-white"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white">General Legal Help</h4>
+                        <small class="text-teal-300">Ask any legal question</small>
+                    </div>
+                </div>
+                <button id="close-chat-modal" class="p-2 text-violet-300 hover:text-white">&times;</button>
+            </div>
+            <div id="general-chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4">
+                </div>
+            <div class="p-4 border-t border-white/10 flex gap-2">
+                <input type="text" id="general-chat-input" class="flex-grow bg-black/20 border border-violet-400/50 rounded-full px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-teal-500" placeholder="Ask a question...">
+                <button id="general-chat-send" class="w-10 h-10 flex-shrink-0 bg-gradient-to-r from-teal-400 to-blue-500 text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform"><i data-lucide="send"></i></button>
+            </div>
         </div>
+
+        <button id="open-chat-button" class="bg-gradient-to-r from-violet-500 to-pink-500 text-white w-16 h-16 rounded-full flex items-center justify-center shadow-xl hover:scale-110 transition-transform duration-300">
+            <i data-lucide="message-circle" class="w-8 h-8"></i>
+        </button>
+    </div>
     <script src="/static/legal2.js"></script>
 </body>
 </html>
